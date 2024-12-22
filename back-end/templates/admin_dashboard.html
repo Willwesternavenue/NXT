@@ -1,3 +1,4 @@
+<!-- admin_dashboard.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,6 +9,20 @@
 </head>
 <body>
     <h1>Admin Dashboard</h1>
+    
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+            {% for category, message in messages %}
+                {% if category == 'success' %}
+                    <li class="flash {{ category }}">{{ message }}</li>
+                {% endif %}
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+    
     <a href="{{ url_for('admin_logout') }}">Logout</a>
 
     <h2>Clients List</h2>
@@ -26,7 +41,7 @@
                     <td>{{ user.name }}</td>
                     <td>{{ user.company }}</td>
                     <td>{{ "{:,.2f}".format(user.credit_balance) }}</td>
-                    <form method="POST">
+                    <form method="POST" onsubmit="return confirmCharge()">
                         <input type="hidden" name="user_id" value="{{ user.id }}">
                         <td>
                             <input type="number" name="charge_amount" step="0.01" required>
@@ -38,14 +53,13 @@
         </tbody>
     </table>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-        <ul>
-        {% for category, message in messages %}
-            <li class="flash {{ category }}">{{ message }}</li>
-        {% endfor %}
-        </ul>
-    {% endif %}
-    {% endwith %}
+    <script>
+        function confirmCharge() {
+            // ユーザーに確認ダイアログを表示
+            var chargeAmount = document.querySelector('input[name="charge_amount"]').value;
+            var confirmMessage = "Are you sure you want to add " + chargeAmount + " to this user's credit balance?";
+            return confirm(confirmMessage); // OKが押されたらtrueを返す
+        }
+    </script>
 </body>
 </html>

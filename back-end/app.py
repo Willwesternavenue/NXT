@@ -56,8 +56,10 @@ class Admin(db.Model):
 @app.before_request
 def clear_session_messages():
     """不要なセッションメッセージを削除する"""
-    if session.get('messages'):
-        session.pop('messages')
+    # ログアウト時に不要なメッセージを消去する
+    if session.get('admin_logged_in') is None:  # ログアウト時
+        session.pop('_flashes', None)  # セッションから全てのフラッシュメッセージを削除
+
 
 @app.route('/test-db', methods=['GET'])
 def test_db():
@@ -157,16 +159,9 @@ def admin_login():
 
 @app.route('/admin-logout')
 def admin_logout():
-    if session.get('admin_logged_in'):
-        session.pop('admin_logged_in', None)
-        # ログアウトメッセージを設定
-        flash('Logged out successfully!', 'success')
-    else:
-        flash('You are not logged in.', 'warning')
-    
-    # フラッシュメッセージのみを設定し、リダイレクト先で処理
+    session.pop('admin_logged_in', None)
+    flash('Logged out successfully!', 'success')
     return redirect(url_for('admin_login'))
-
 
 # 管理者用ダッシュボード
 @app.route('/admin-dashboard', methods=['GET', 'POST'])
