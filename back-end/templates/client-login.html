@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+
+    <h1>Client Login</h1>
+    <form method="POST">
+        {{ form.csrf_token }}
+
+        <div>
+            {{ form.name.label }}  
+            {{ form.name(size=32) }}  <!-- login_id -> name -->
+        </div>
+        <div>
+            <label for="password">Password</label>
+            {{ form.password(size=32) }}
+        </div>
+        
+        <div>
+            {{ form.submit() }}
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+            {% for category, message in messages %}
+                <li class="flash {{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        {% endwith %}
+    </form>
+
+</body>
+</html>

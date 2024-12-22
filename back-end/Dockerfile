@@ -10,6 +10,9 @@ COPY requirements.txt requirements.txt
 # 依存関係をインストール
 RUN pip install --no-cache-dir -r requirements.txt
 
+RUN pip install flask-wtf
+
+
 # アプリケーションコードをコピー
 COPY . .
 

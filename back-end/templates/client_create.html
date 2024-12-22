@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create User</title>
+
+    <!-- CSSファイルのリンク -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+
+    <form method="POST">
+        {{ form.csrf_token }}
+        
+        <div>
+            {{ form.company.label }}
+            {{ form.company(size=32) }}
+        </div>
+        
+        <div>
+            {{ form.name.label }}  <!-- login_id を name に変更 -->
+            {{ form.name(size=32) }}  <!-- login_id を name に変更 -->
+        </div>
+        
+        <div>
+            {{ form.password.label }} 
+            {{ form.password(size=32) }}
+        </div>
+        
+        <div>
+            {{ form.submit() }}
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+            {% for category, message in messages %}
+                <li class="flash {{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        {% endwith %}
+    </form>
+
+</body>
+</html>

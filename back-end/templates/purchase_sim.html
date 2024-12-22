@@ -1,0 +1,12 @@
+<h1>Purchase SIM</h1>
+<p>Credit Balance: {{ client.credit_balance }} USD</p>
+<form method="POST">
+  Plan:
+  <select name="plan_name">
+    {% for p in plans %}
+      <option value="{{ p.name }}">{{ p.name }} ({{ p.cost }} USD)</option>
+    {% endfor %}
+  </select>
+  <input type="hidden" name="cost" value="10">
+  <button type="submit">Purchase</button>
+</form>
